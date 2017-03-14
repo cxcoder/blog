@@ -1,4 +1,4 @@
-JVM Í¨¹ý *À¬»øÊÕ¼¯-GC* ×Ô¶¯¹ÜÀíÄÚ´æ£¬Ö÷Òª¶Ô¶ÑÖÐ¶ÔÏóÄÚ´æµÄ·ÖÅäºÍ»ØÊÕ¡£ÎªÁË±ãÓÚÕûÀíÄÚ´æËéÆ¬£¬JVM ²ÉÓÃ**·Ö´úÀ¬»øÊÕ¼¯Æ÷**£¬»ùÓÚ¶ÔÏóÉúÃüÖÜÆÚµÄ²»Í¬£¬½«¶Ñ·Ö³É²»Í¬µÄÄÚ´æÇøÓò£¬·Ö±ð²ÉÓÃ²»Í¬µÄÀ¬»øÊÕ¼¯Ëã·¨¡£JVM ¶Ñ¿É¼òµ¥ÈÏÎªÓÉÒÔÏÂÁ½²¿·Ö×é³É£º
+JVM Í¨¹ý *À¬»øÊÕ¼¯-GC* ×Ô¶¯¹ÜÀíÄÚ´æ£¬Ö÷Òª¶Ô¶ÑÖÐ¶ÔÏóÄÚ´æµÄ·ÖÅäºÍ»ØÊÕ¡£ÎªÁË±ãÓÚÕûÀíÄÚ´æËéÆ¬£¬JVM ²ÉÓÃ**·Ö´úÀ¬»øÊÕ¼¯Æ÷**£¬»ùÓÚ¶ÔÏó²»Í¬ÉúÃüÖÜÆÚ£¬½«¶Ñ·Ö³É²»Í¬µÄÄÚ´æÇøÓò£¬·Ö±ð²ÉÓÃ²»Í¬µÄÀ¬»øÊÕ¼¯Ëã·¨¡£JVM ¶Ñ¿É¼òµ¥ÈÏÎªÓÉÒÔÏÂÁ½²¿·Ö×é³É£º
 
 - *Young Generation*£ºÄêÇá´ú£¬ÓÉ*Eden*ºÍÁ½¸öÏàµÈµÄ*Survivor*¿Õ¼ä×é³É£¬ÆäÖÐÒ»¸öSurvivorÊ¼ÖÕÎª¿Õ£¬ÓÃÀ´¸´ÖÆMinor GCºóÔÚEdenºÍÁíÒ»¸öSurvivor´æ»îµÄ¶ÔÏó¡£
 - *Old Generation*£ºÀÏÄê´ú£¬¶ÔÏóÉúÃüÖÜÆÚ±È½Ï³¤¡£
@@ -17,11 +17,9 @@ JVM Í¨¹ý *À¬»øÊÕ¼¯-GC* ×Ô¶¯¹ÜÀíÄÚ´æ£¬Ö÷Òª¶Ô¶ÑÖÐ¶ÔÏóÄÚ´æµÄ·ÖÅäºÍ»ØÊÕ¡£ÎªÁË±ãÓÚÕûÀ
 
 - **²ÉÓÃºÎÖÖ·½Ê½½øÐÐ»ØÊÕ**£¬À¬»øÊÕ¼¯Ëã·¨£º
 
- - *Copying*£¬¸´ÖÆ£¬
+ - *Copying*£¬¸´ÖÆ£¬½«´æ»î¶ÔÏó´ÓÒ»¿éÄÚ´æ¸´ÖÆµ½ÁíÒ»¿éÄÚ´æ£¬²»²úÉúÄÚ´æËéÆ¬£¬µ«¿Õ¼äÀûÓÃÂÊ½ÏµÍ¡£
  - *Mark-Sweep*£¬±ê¼ÇÇåÀí£¬´ÓGC roots³ö·¢±ê¼ÇËùÓÐ´æ»î¶ÔÏó£¬È»ºóÇåÀíËùÓÐÎ´±ê¼ÇµÄ¶ÔÏó£¬»á²úÉúÄÚ´æËéÆ¬¡£
- - *Mark-Compacting*£¬±ê¼ÇÕûÀí£¬
-
-
+ - *Mark-Compact*£¬±ê¼ÇÕûÀí£¬±ê¼ÇÇå³ýºó£¬»áÑ¹ËõÄÚ´æ£¬±ÜÃâÄÚ´æËéÆ¬¡£
 
 
 ## ÄÚ´æ·ÖÅä
