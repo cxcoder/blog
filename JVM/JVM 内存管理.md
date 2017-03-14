@@ -9,14 +9,12 @@ JVM Í¨¹ý *À¬»øÊÕ¼¯-GC* ×Ô¶¯¹ÜÀíÄÚ´æ£¬Ö÷Òª¶Ô¶ÑÖÐ¶ÔÏóÄÚ´æµÄ·ÖÅäºÍ»ØÊÕ¡£ÎªÁË±ãÓÚÕûÀ
 ÄÚ´æ»ØÊÕÖ÷Òª¿¼ÂÇÁ½¸öÎÊÌâ£º
 
 - **ÈçºÎÅÐ¶Ï¶ÔÏó¿É±»»ØÊÕ**£¬ÅÐ¶Ï²ßÂÔ£º
-
  - *Tracing GC*£¬¸ú×ÙÊÕ¼¯£¬Ò²½Ð**¿É´ïÐÔ·ÖÎöËã·¨**£¬ÆäË¼ÏëÊÇ´ÓÄ³Ð©**¸ù¶ÔÏóÒýÓÃ(GC roots)**³ö·¢×ÜÄÜÕÒµ½Ò»¸öµ½Ò»×é´æ»î¶ÔÏóµÄÒýÓÃÁ´¡£
  - *Reference counting*£¬**ÒýÓÃ¼ÆÊý·¨**£¬²»ÄÜ½â¾öÑ­»·ÒýÓÃ¡£
  - *Escape analysis*£¬**ÌÓÒÝ·ÖÎö**£¬¿ÉÒÔ½«¶Ñ·ÖÅä×ªÎªÕ»·ÖÅä£¬¶¯Ì¬±àÒëÓÅ»¯£¬¼õÇáGCÑ¹Á¦¡£
 
 
 - **²ÉÓÃºÎÖÖ·½Ê½½øÐÐ»ØÊÕ**£¬À¬»øÊÕ¼¯Ëã·¨£º
-
  - *Copying*£¬¸´ÖÆ£¬½«´æ»î¶ÔÏó´ÓÒ»¿éÄÚ´æ¸´ÖÆµ½ÁíÒ»¿éÄÚ´æ£¬²»²úÉúÄÚ´æËéÆ¬£¬µ«¿Õ¼äÀûÓÃÂÊ½ÏµÍ¡£
  - *Mark-Sweep*£¬±ê¼ÇÇåÀí£¬´ÓGC roots³ö·¢±ê¼ÇËùÓÐ´æ»î¶ÔÏó£¬È»ºóÇåÀíËùÓÐÎ´±ê¼ÇµÄ¶ÔÏó£¬»á²úÉúÄÚ´æËéÆ¬¡£
  - *Mark-Compact*£¬±ê¼ÇÕûÀí£¬±ê¼ÇÇå³ýºó£¬»áÑ¹ËõÄÚ´æ£¬±ÜÃâÄÚ´æËéÆ¬¡£
