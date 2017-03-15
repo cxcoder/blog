@@ -80,12 +80,17 @@ Hotspot JVM 提供了多个垃圾收集器让分代收集器组合使用：
 ### 64位JVM 默认配置，以JDK 8为例
 
 
-使用命令`java -XX:+PrintFlagsFinal -version`或者`jmap -heap <pid>`可以查看默认配置。
+命令`java -XX:+PrintFlagsFinal -version`或者`jmap -heap <pid>`可以查看默认配置。
 
 
-JVM堆最小为物理内存的 1/64，64位至少2G，即最小32M；最大为物理内存的 1/4，如128G内存，默认JVM最大32G，可以使用`-Xms`和`-Xmx`指定初始和最大大小。年轻代默认比例为`-XX:NewRatio=2`，即占总堆的 1/3，Survivor空间比例为`-XX:SurvivorRatio=8`，即每个Survivor占Eden的 1/8，因为有两个，所以占年轻代的 1/10。
+JVM堆最小为物理内存的 1/64；最大为物理内存的 1/4。可以使用`-Xms`和`-Xmx`指定初始和最大大小。年轻代默认比例为`-XX:NewRatio=2`，即占总堆的 1/3，Survivor空间比例为`-XX:SurvivorRatio=8`，即每个Survivor占Eden的 1/8，因为有两个，所以占年轻代的 1/10。
 
-JDK 8 默认垃圾收集器是ParallelOldGC，其默认打开AdaptiveSizePolicy，自适应调整各种参数，需要手动指定`-XX:SurvivorRatio=8`才能让这个配置生效。比如指定堆大小为270M，那么个区域大小如下：
+JDK 8 默认垃圾收集器是ParallelOldGC，如果直接观察各区大小，计算会有出入，这是因为 Parallel Scavenge 默认打开AdaptiveSizePolicy，自适应调整各种参数，此时需要手动指定`-XX:SurvivorRatio=8`才能得到准确的结果。比如指定堆大小为270M，那么个区域大小如下：
+
+
+
+### GC roots的回收
+
 
 
 
