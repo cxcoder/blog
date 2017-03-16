@@ -1,6 +1,4 @@
-JVM 通过 *垃圾收集-GC* 自动管理内存堆中对象内存的分配和回收。JVM 通常采用**分代垃圾收集器**，以便于整理内存碎片。分代垃圾收集器就是基于对象不同生命周期，将堆分成不同的
-
-内存区域，然后组合使用不同的垃圾收集算法，可简单认为分为两部分组成：
+JVM 通过 *垃圾收集-GC* 自动管理内存堆中对象内存的分配和回收。JVM 通常采用**分代垃圾收集器**，以便于整理内存碎片。分代垃圾收集器就是基于对象不同生命周期，将堆分成不同的内存区域，然后组合使用不同的垃圾收集算法，可简单认为分为两部分组成：
 
 - *Young Generation*：年轻代，由*Eden*和两个相等的*Survivor*空间组成，其中一个Survivor始终为空，用来复制Minor GC后在Eden和另一个Survivor存活的对象。
 - *Old Generation*：老年代，对象生命周期比较长。
@@ -25,13 +23,11 @@ JVM 通过 *垃圾收集-GC* 自动管理内存堆中对象内存的分配和回
 
 ## 内存分配
 
-对象实例首先在 Eden 区分配，为了快速分配，Hotspot JVM 采用的是一种 *bump-the-pointer* 的**线性分配**方法。分配时一般都有大块连续内存可用，此方法就是检查剩余内存是否足
+对象实例首先在 Eden 区分配，为了快速分配，Hotspot JVM 采用的是一种 *bump-the-pointer* 的**线性分配**方法。分配时一般都有大块连续内存可用，此方法就是检查剩余内存是否足够，给对象分配内存，然后更新指针偏移量和初始化对象。
 
-够，给对象分配内存，然后更新指针偏移量和初始化对象。
 
-线性分配效率固然高，但对多线程程序来说，分配内存的操作必须是线程安全的。可以使用全局锁但会影响性能，Hotspot JVM 采用的是一种 *Thread-Local Allocation Buffers (TLABs)* 
+线性分配效率固然高，但对多线程程序来说，分配内存的操作必须是线程安全的。可以使用全局锁但会影响性能，Hotspot JVM 采用的是一种 *Thread-Local Allocation Buffers (TLABs)* 的方法，为每个线程分配一个缓冲区，当TLAB满了，再加锁去申请，在线程内部就能使用*bump-the-pointer*，进而提高分配的吞吐量。
 
-的方法，为每个线程分配一个缓冲区，当TLAB满了，再加锁去申请，在线程内部就能使用*bump-the-pointer*，进而提高分配的吞吐量。
 
 分配内存时，一些大对象有可能直接在老年代分配，在年轻代经过几轮Minor GC存活，达到一定年龄的对象，会被提升复制到老年代。
 
@@ -44,7 +40,9 @@ Hotspot JVM 自JDK 6u23开始支持逃逸分析，采用 *Tracing GC* 追踪堆�
 - 类引用类型静态成员变量
 - JNI 本地方法局部变量，参数和JNI 全局引用
 
+
 需要注意*GC roots*是一组**对象引用**而不是**引用对象**。
+
 
 Hotspot JVM 提供了多个垃圾收集器让分代收集器组合使用：
 
@@ -54,12 +52,12 @@ Hotspot JVM 提供了多个垃圾收集器让分代收集器组合使用：
 
 - **并行收集器**，吞吐量收集器，多个GC线程加速垃圾回收
     - *ParNew*，年轻代，使用*复制算法*，可看做并行的Serial，*ParNew*
-    - *Parallel Scavenge*，年轻代，使用*复制算法*，与 ParNew 的区别，它可以动态调节停顿时间和最大吞吐量，*PSYoungGen*
+    - *Parallel Scavenge*，年轻代，使用*复制算法*，与 ParNew 的区别，它可以动态调节最大停顿时间和吞吐量，*PSYoungGen*
     - *Parallel Old*，老年代，使用*标记压缩整理算法*，通常与*Parallel Scavenge*配合使用，*ParOldGen*
 
 - **并发收集器**，看重响应时间而不是吞吐量
     - *CMS, Concurrent Mark Sweep*，低停顿，采用*标记清除算法*，会有内存碎片，Java堆空间需求比较大，*CMS*
-    - *G1, Garbage-First*，相比CMS，压缩内存，
+    - *G1, Garbage-First*，相比CMS，压缩内存，*G1*
 
 常用JVM参数指定GC组合：
 - -XX:+UseSerialGC：Serial + Serial Old
@@ -74,16 +72,29 @@ Hotspot JVM 提供了多个垃圾收集器让分代收集器组合使用：
 
 使用命令`java -XX:+PrintFlagsFinal -version`或者`jmap -heap <pid>`可以查看默认配置。
 
-JVM堆最小为物理内存的 1/64，64位至少2G，即最小32M；最大为物理内存的 1/4，如128G内存，默认JVM最大32G，可以使用`-Xms`和`-Xmx`指定初始和最大大小。年轻代默认比例为`-
 
-XX:NewRatio=2`，即占总堆的 1/3，Survivor空间比例为`-XX:SurvivorRatio=8`，即每个Survivor占Eden的 1/8，因为有两个，所以占年轻代的 1/10。
-
-JDK 8 默认垃圾收集器是ParallelOldGC，其中Parallel Scavenge默认打开AdaptiveSizePolicy，自适应调整各种参数，默认的SurvivorRatio 配置需要手动指定才能生效。比如指定堆大小
-
-为270M，那么各区域大小如下：
+JVM堆最小为物理内存的 1/64，64位至少2G，即最小32M；最大为物理内存的 1/4，如128G内存，默认JVM最大32G，可以使用`-Xms`和`-Xmx`指定初始和最大大小。年轻代默认比例为`NewRatio=2`，即占总堆的 1/3，可使用`-Xmn`指定大小，Survivor空间比例为`SurvivorRatio=8`，即每个Survivor占Eden的 1/8，因为有两个，所以占年轻代的 1/10。
 
 
-### 永久代
+JDK 8 默认垃圾收集器是ParallelOldGC，其中Parallel Scavenge默认打开AdaptiveSizePolicy，自适应调整各种参数，默认的SurvivorRatio 配置需要手动指定才能生效。比如指定堆大小为270M，那么各区域大小如下：
+
+
+
+### 永久代, Permanent Generation
+
+JVM 中方法区的实现，不同版本之间存储内容存在差别：
+
+- JDK 6：类元数据、类静态变量、intern字符串
+- JDK 7：将intern字符串移到堆中
+- JDK 8：移除永久代，新增一个元空间存储类元数据，将类静态变量和intern字符串移到堆中
+
+
+永久代逻辑上是堆的组成部分，64位JVM默认大小为82M，但最大大小难以估计，因为程序里面有多少类，有多少方法以及常量池大小都很难估算，并且永久代垃圾收集与老年代绑定，任一区域满了都会触发Full GC，所以对永久代的调优很困难。在JDK 8中，分离类元数据到元空间并放在本地内存中，
+
+
+### JDK 8 GC Cause
+
+
 
 
 ## 参考
