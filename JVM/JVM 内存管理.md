@@ -12,15 +12,15 @@ JVM 通过 *垃圾收集-GC* 自动管理内存堆中对象内存的分配和回
 
 - **如何判断对象可被回收**，判断策略：
 
- - *Tracing GC*，跟踪收集，也叫**可达性分析算法**，其思想是从某些**根对象引用(GC roots)**出发总能找到一个到一组存活对象的引用链。
- - *Reference counting*，**引用计数法**，不能解决循环引用。
- - *Escape analysis*，**逃逸分析**，可以将堆分配转为栈分配，动态编译优化手段，减轻GC压力。
+    - *Tracing GC*，跟踪收集，也叫**可达性分析算法**，其思想是从某些**根对象引用(GC roots)**出发总能找到一个到一组存活对象的引用链。
+    - *Reference counting*，**引用计数法**，不能解决循环引用。
+    - *Escape analysis*，**逃逸分析**，可以将堆分配转为栈分配，动态编译优化手段，减轻GC压力。
 
 - **采用何种方式进行回收**，垃圾收集算法：
 
- - *Copying*，复制，将存活对象从一块内存复制到另一块内存，不产生内存碎片，由于要保留一个空的备份内存，所以空间利用率较低。
- - *Mark-Sweep*，标记清理，从GC roots出发标记所有存活对象，然后清理所有未标记的对象，会产生内存碎片。
- - *Mark-Compact*，标记整理，标记清除后，会压缩内存，避免内存碎片。
+    - *Copying*，复制，将存活对象从一块内存复制到另一块内存，不产生内存碎片，由于要保留一个空的备份内存，所以空间利用率较低。
+    - *Mark-Sweep*，标记清理，从GC roots出发标记所有存活对象，然后清理所有未标记的对象，会产生内存碎片。
+    - *Mark-Compact*，标记整理，标记清除后，会压缩内存，避免内存碎片。
 
 
 ## 内存分配
@@ -49,23 +49,19 @@ Hotspot JVM 自JDK 6u23开始支持逃逸分析，采用 *Tracing GC* 追踪堆�
 Hotspot JVM 提供了多个垃圾收集器让分代收集器组合使用：
 
 - **串行收集器**，单个GC线程执行所有垃圾收集工作
-
- - *Serial*，年轻代，使用*复制算法*，*DefNew*
- - *Serial Old*，老年代，使用*标记压缩整理算法*，*Tenured*
+    - *Serial*，年轻代，使用*复制算法*，*DefNew*
+    - *Serial Old*，老年代，使用*标记压缩整理算法*，*Tenured*
 
 - **并行收集器**，吞吐量收集器，多个GC线程加速垃圾回收
-
- - *ParNew*，年轻代，使用*复制算法*，可看做并行的Serial，*ParNew*
- - *Parallel Scavenge*，年轻代，使用*复制算法*，与 ParNew 的区别，它可以动态调节停顿时间和最大吞吐量，*PSYoungGen*
- - *Parallel Old*，老年代，使用*标记压缩整理算法*，通常与*Parallel Scavenge*配合使用，*ParOldGen*
+    - *ParNew*，年轻代，使用*复制算法*，可看做并行的Serial，*ParNew*
+    - *Parallel Scavenge*，年轻代，使用*复制算法*，与 ParNew 的区别，它可以动态调节停顿时间和最大吞吐量，*PSYoungGen*
+    - *Parallel Old*，老年代，使用*标记压缩整理算法*，通常与*Parallel Scavenge*配合使用，*ParOldGen*
 
 - **并发收集器**，看重响应时间而不是吞吐量
-
- - *CMS, Concurrent Mark Sweep*，低停顿，采用*标记清除算法*，会有内存碎片，Java堆空间需求比较大，*CMS*
- - *G1, Garbage-First*，相比CMS，压缩内存，
+    - *CMS, Concurrent Mark Sweep*，低停顿，采用*标记清除算法*，会有内存碎片，Java堆空间需求比较大，*CMS*
+    - *G1, Garbage-First*，相比CMS，压缩内存，
 
 常用JVM参数指定GC组合：
-
 - -XX:+UseSerialGC：Serial + Serial Old
 - -XX:+UseParNewGC：ParNew + Serial Old
 - -XX:+UseParallelGC：Parallel Scavenge + Serial Old
