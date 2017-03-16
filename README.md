@@ -7,8 +7,8 @@
 ## 目录
 
 - JVM
-  - [JVM 体系结构](https://github.com/cxcoder/blog/blob/master/JVM/JVM%20%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84.md)
-  - [JVM 内存管理](https://github.com/cxcoder/blog/blob/master/JVM/JVM%20%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86.md)
+ - [JVM 体系结构](https://github.com/cxcoder/blog/blob/master/JVM/JVM%20%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84.md)
+ - [JVM 内存管理](https://github.com/cxcoder/blog/blob/master/JVM/JVM%20%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86.md)
 
 - Computer
   - [字符集和字符编码] (https://github.com/cxcoder/blog/blob/master/Computer/%E5%AD%97%E7%AC%A6%E9%9B%86%E5%92%8C%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81.md)
