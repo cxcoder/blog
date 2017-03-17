@@ -78,7 +78,8 @@ JVM堆最小为物理内存的 1/64，64位至少2G，即最小32M；最大为�
 
 JDK 8 默认垃圾收集器是ParallelOldGC，其中Parallel Scavenge默认打开AdaptiveSizePolicy，自适应调整各种参数，默认的SurvivorRatio 配置需要手动指定才能生效。比如指定堆大小为270M，那么各区域大小如下：
 
-
+![JVM Heap](https://github.com/cxcoder/blog/blob/master/Image/Heap.png)
+图 1 并行垃圾收集，指定SurvivorRatio=8，堆空间大小
 
 ### 永久代, Permanent Generation
 
@@ -89,13 +90,18 @@ JVM 中方法区的实现，不同版本之间存储内容存在差别：
 - JDK 8：移除永久代，新增一个元空间存储类元数据，将类静态变量和intern字符串移到堆中
 
 
-永久代逻辑上是堆的组成部分，64位JVM默认大小为82M，但最大大小难以估计，因为程序里面有多少类，有多少方法以及常量池大小都很难估算，并且永久代垃圾收集与老年代绑定，任一区域满了都会触发Full GC，所以对永久代的调优很困难。在JDK 8中，分离类元数据到元空间并放在本地内存中，
+永久代逻辑上是堆的组成部分，64位JVM默认大小为82M，但最大大小难以估计，因为程序里面有多少类，有多少方法以及常量池大小都很难估算，此外永久代垃圾收集与老年代绑定，任一区域满了都会触发Full GC，所以对永久代的调优很困难。
 
 
-### JDK 8 GC Cause
+在JDK 8中，移除永久代，类元数据分配在本地内存中，默认情况下，可用内存不受限制，可使用`MaxMetaspaceSize`设置可用的内存上限。Hotspot JVM 显式管理这部分内存，从OS申请空间，然后分成块，一个块绑定到一个特定的类加载器，类元数据就在这些块中分配，当类卸载或加载器标记被回收，这些块被释放重用或返回OS。
 
 
+## 小结
 
+JDK 8中 GC cause有：年轻代内存分配失败，引起的Minor GC；年轻代提升到老年代，而老年代空间不足，引起的Full GC；元数据空间达到阈值，引起的GC。JDK 7之前，由于永久代空间不足引起的Full GC。不管是永久代或者元数据空间，也都会存在内存泄漏，比如web应用，当应用程序被卸载，那么它的war包中的所有类都是垃圾，如果不移除就会有内存泄漏。
+
+
+在分析内存回收时，一定要谨记 GC roots 是一组对象引用或者说指针，拿废弃常量来说，完全可以通过GC root来识别，进而回收。
 
 
 ## 参考
@@ -106,3 +112,4 @@ JVM 中方法区的实现，不同版本之间存储内容存在差别：
 - [JEP 122: Remove the Permanent Generation](http://openjdk.java.net/jeps/122)
 - [Java HotSpot VM Options](http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html)
 - [String.intern in Java 6, 7 and 8 – string pooling](http://java-performance.info/string-intern-in-java-6-7-8/)
+- [Java永久代去哪儿了](http://www.infoq.com/cn/articles/Java-PERMGEN-Removed)
