@@ -79,6 +79,7 @@ JVM堆最小为物理内存的 1/64，64位至少2G，即最小32M；最大为�
 JDK 8 默认垃圾收集器是ParallelOldGC，其中Parallel Scavenge默认打开AdaptiveSizePolicy，自适应调整各种参数，默认的SurvivorRatio 配置需要手动指定才能生效。比如指定堆大小为270M，那么各区域大小如下：
 
 ![JVM Heap](https://github.com/cxcoder/blog/blob/master/Image/Heap.png)
+
 图 1 并行垃圾收集，指定SurvivorRatio=8，堆空间大小
 
 ### 永久代, Permanent Generation
